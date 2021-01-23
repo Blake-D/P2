@@ -1,6 +1,8 @@
 require('dotenv').config() // configures environment variables
+const db = require('./models')
 const express = require('express')
 const axios = require('axios')
+// const cheerio = require('cheerio')
 const ejsLayouts = require('express-ejs-layouts')
 const app = express()
 const session = require('express-session')
@@ -42,18 +44,30 @@ app.use((req, res, next) => {
 app.use('/auth', require('./controllers/auth'))
 
 app.get('/', (req, res) => {
-    let starwarsUrl = 'https://swgoh.gg/api/ships/'
+    let starwarsUrl = 'https://swgoh.gg/api/ships/stats'
     axios.get(starwarsUrl).then(apiResponse => {
+        console.log(apiResponse.data)
         let ships = apiResponse.data
-        console.log(ships)
         res.render('home', { ships: ships })
     })
-    // res.render('home')
 })
+
+// app.get('/', (req, res) => {
+//     axios.get('https://swgoh.gg/ships/stats/')
+//     .then(response => {
+//         let $ = cheerio.load(response.data)
+//         let result = $('').find('a').attr('')
+//         console.log(result)
+//     })
+// })
 
 app.get('/profile', isLoggedIn, (req, res) => {
     res.render('profile')
 })
+
+// app.post('/fleet' (req, res) => {
+//     db.starWars.findOrCreate
+// })
 
 app.get('*', (req, res) => {
     res.render('404.ejs')

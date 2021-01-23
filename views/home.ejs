@@ -2,4 +2,8 @@
 
 <% ships.forEach(function(ship) { %>
     <h2><%= ship.name %></h2>
+    <form method="POST" action="/fleet">
+        <input hidden type="text" name="name" value="<%= ship.name %>">
+        <button class="btn btn-primary" type="submit">Add to fleet</button>
+    </form>
 <% }) %>
